@@ -10,8 +10,6 @@ import (
 	pb "github.com/webmocha/lumberman/pb"
 	bolt "go.etcd.io/bbolt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/testdata"
 )
 
 const (
@@ -20,11 +18,8 @@ const (
 )
 
 var (
-	tls      = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
-	certFile = flag.String("cert_file", "", "The TLS cert file")
-	keyFile  = flag.String("key_file", "", "The TLS key file")
-	dbPath   = flag.String("db_file", "lumberman.db", "Path to DB file")
-	port     = flag.Int("port", 9090, "The server port")
+	dbPath = flag.String("db_file", "lumberman.db", "Path to DB file")
+	port   = flag.Int("port", 9090, "The server port")
 )
 
 func main() {
@@ -62,21 +57,7 @@ func main() {
 	}
 	log.Printf("Server listening on port %d", *port)
 
-	var opts []grpc.ServerOption
-	if *tls {
-		if *certFile == "" {
-			*certFile = testdata.Path("server1.pem")
-		}
-		if *keyFile == "" {
-			*keyFile = testdata.Path("server1.key")
-		}
-		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
-		if err != nil {
-			log.Fatalf("Failed to generate credentials %v", err)
-		}
-		opts = []grpc.ServerOption{grpc.Creds(creds)}
-	}
-	grpcServer := grpc.NewServer(opts...)
+	grpcServer := grpc.NewServer()
 	pb.RegisterLoggerServer(grpcServer, NewLogServer(db))
 	grpcServer.Serve(lis)
 }

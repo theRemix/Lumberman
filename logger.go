@@ -36,7 +36,7 @@ func (s *LogServer) storePrefix(prefix string) {
 		}
 		return b.Put(key, nil)
 	}); dbErr != nil {
-		log.Printf("[storePrefix()] [ERROR] storing prefix (%s): %v\n", prefix, dbErr)
+		log.Printf("[storePrefix()] Error storing prefix (%s): %v\n", prefix, dbErr)
 	}
 }
 
@@ -69,7 +69,7 @@ func (s *LogServer) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogReply, 
 	if encodeLogErr != nil {
 		return &pb.LogReply{
 			Status: pb.LogStatus_FAILURE,
-		}, fmt.Errorf("[Log()] [ERROR] encoding site: %+v\n", encodeLogErr)
+		}, fmt.Errorf("[Log()] Error encoding site: %+v\n", encodeLogErr)
 	}
 
 	if dbErr := s.db.Update(func(tx *bolt.Tx) error {
@@ -108,7 +108,7 @@ func (s *LogServer) GetLog(ctx context.Context, req *pb.GetLogRequest) (*pb.GetL
 
 	logReply, err := decodeLog(*bytes.NewBuffer(logReplyBytes))
 	if err != nil {
-		log.Printf("[GetLog()] Decoding pb.GetLogReply (key: %s)with gob: %v\n", key, err)
+		log.Printf("[GetLog()] Error decoding pb.GetLogReply (key: %s)with gob: %v\n", key, err)
 		return nil, err
 	}
 	return logReply, nil
@@ -125,7 +125,7 @@ func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.Ge
 			logReply, err := decodeLog(*bytes.NewBuffer(v))
 			logReply.Key = string(k)
 			if err != nil {
-				log.Printf("[GetLogs()] [ERROR] decoding log (key: %s) : %v\n", k, err)
+				log.Printf("[GetLogs()] Error decoding log (key: %s) : %v\n", k, err)
 				return err
 				continue
 			}
@@ -133,7 +133,7 @@ func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.Ge
 		}
 		return nil
 	}); err != nil {
-		log.Printf("[GetLogs()] [ERROR] reading from db: %v\n", err)
+		log.Printf("[GetLogs()] Error reading from db: %v\n", err)
 		return nil, err
 	}
 
@@ -190,7 +190,7 @@ func (s *LogServer) ListLogs(ctx context.Context, req *pb.ListLogsRequest) (*pb.
 		}
 		return nil
 	}); err != nil {
-		log.Printf("[ListLogs()] [ERROR] reading from db (prefix: %s): %v\n", prefix, err)
+		log.Printf("[ListLogs()] Error reading from db (prefix: %s): %v\n", prefix, err)
 		return nil, err
 	}
 
@@ -203,7 +203,7 @@ func encodeLog(logReply *pb.GetLogReply) ([]byte, error) {
 	var val bytes.Buffer
 	enc := gob.NewEncoder(&val)
 	if err := enc.Encode(logReply); err != nil {
-		log.Printf("[encodeLog()] [ERROR] Encoding pb.GetLogReply with gob: %v\n", err)
+		log.Printf("[encodeLog()] Error Encoding pb.GetLogReply with gob: %v\n", err)
 		return nil, err
 	}
 
@@ -215,7 +215,7 @@ func decodeLog(buf bytes.Buffer) (*pb.GetLogReply, error) {
 	dec := gob.NewDecoder(&buf)
 	err := dec.Decode(logReply)
 	if err != nil {
-		log.Printf("[decodeLog()] [ERROR] Decoding pb.GetLogReply with gob: %v\n", err)
+		log.Printf("[decodeLog()] Error Decoding pb.GetLogReply with gob: %v\n", err)
 	}
 	return logReply, err
 }
