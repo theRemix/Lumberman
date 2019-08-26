@@ -12,6 +12,4 @@ run:
 
 dev: build run
 
-dev-insecure: build run
-
-.PHONY: certs build build-linux64 proto run dev dev-insecure
+.PHONY: build build-linux64 proto run dev
