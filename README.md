@@ -5,7 +5,7 @@
 <h1 align="center">Lumberman</h1>
 
 <p align="center">
-  <strong>Logger service using [gRPC](https://grpc.io/) stored in [bbolt (bolt db)](https://github.com/etcd-io/bbolt)</strong>
+  <strong>Logger service using <a href="https://grpc.io">gRPC</a> stored in <a href="https://github.com/etcd-io/bbolt">bbolt (bolt db)</a></strong>
 </p>
 
 
