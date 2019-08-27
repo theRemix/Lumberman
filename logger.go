@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/gob"
-	"fmt"
 	"log"
 
 	timestamp "github.com/golang/protobuf/ptypes"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/webmocha/lumberman/pb"
 	bolt "go.etcd.io/bbolt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type LogServer struct {
@@ -67,9 +68,8 @@ func (s *LogServer) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogReply, 
 	logBytes, encodeLogErr := encodeLog(logReply)
 
 	if encodeLogErr != nil {
-		return &pb.LogReply{
-			Status: pb.LogStatus_FAILURE,
-		}, fmt.Errorf("[Log()] Error encoding site: %+v\n", encodeLogErr)
+		log.Printf("[Log()] Error encoding GetLogReply with gob: %+v\n", encodeLogErr)
+		return nil, status.Error(codes.Internal, "Error encoding GetLogReply")
 	}
 
 	if dbErr := s.db.Update(func(tx *bolt.Tx) error {
@@ -78,9 +78,8 @@ func (s *LogServer) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogReply, 
 		err := b.Put(key, logBytes)
 		return err
 	}); dbErr != nil {
-		return &pb.LogReply{
-			Status: pb.LogStatus_FAILURE,
-		}, dbErr
+		log.Printf("[Log()] Error saving to db: %+v\n", dbErr)
+		return nil, status.Errorf(codes.Internal, "Error saving to db (key: %s)", logReply.GetKey())
 	}
 
 	go s.broadcastToStreams(req.GetPrefix(), logReply)
@@ -88,7 +87,7 @@ func (s *LogServer) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogReply, 
 	go s.storePrefix(req.GetPrefix())
 
 	return &pb.LogReply{
-		Status: pb.LogStatus_SUCCESS,
+		Key: logReply.GetKey(),
 	}, nil
 }
 
@@ -103,14 +102,15 @@ func (s *LogServer) GetLog(ctx context.Context, req *pb.GetLogRequest) (*pb.GetL
 		return nil
 	}); err != nil {
 		log.Printf("[GetLog()] Error reading from db (key: %s): %v\n", key, err)
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "Error reading from db (key: %s)", key)
 	}
 
 	logReply, err := decodeLog(*bytes.NewBuffer(logReplyBytes))
 	if err != nil {
-		log.Printf("[GetLog()] Error decoding pb.GetLogReply (key: %s)with gob: %v\n", key, err)
-		return nil, err
+		log.Printf("[GetLog()] Error decoding pb.GetLogReply (key: %s) with gob: %v\n", key, err)
+		return nil, status.Errorf(codes.Internal, "Error decoding pb.GetLogReply (key: %s)", key)
 	}
+
 	return logReply, nil
 }
 
@@ -127,14 +127,13 @@ func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.Ge
 			if err != nil {
 				log.Printf("[GetLogs()] Error decoding log (key: %s) : %v\n", k, err)
 				return err
-				continue
 			}
 			logs = append(logs, logReply)
 		}
 		return nil
 	}); err != nil {
 		log.Printf("[GetLogs()] Error reading from db: %v\n", err)
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "Error reading from db (prefix: %s)", prefix)
 	}
 
 	return &pb.GetLogsReply{
@@ -170,7 +169,7 @@ func (s *LogServer) ListPrefixes(ctx context.Context, _ *empty.Empty) (*pb.ListP
 		return nil
 	}); err != nil {
 		log.Printf("[ListPrefixes()] Error reading from db (bucket: %s): %v\n", prefixesBucket, err)
-		return nil, err
+		return nil, status.Error(codes.Internal, "Error reading from db")
 	}
 
 	return &pb.ListPrefixesReply{
@@ -191,7 +190,7 @@ func (s *LogServer) ListLogs(ctx context.Context, req *pb.ListLogsRequest) (*pb.
 		return nil
 	}); err != nil {
 		log.Printf("[ListLogs()] Error reading from db (prefix: %s): %v\n", prefix, err)
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "Error reading from db (prefix: %s)", prefix)
 	}
 
 	return &pb.ListLogsReply{

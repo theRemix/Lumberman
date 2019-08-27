@@ -7,11 +7,6 @@ option go_package = "pb";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-enum LogStatus {
-  SUCCESS = 0;
-  FAILURE = 1;
-}
-
 // The Logging service definition.
 service Logger {
   // Write to Log
@@ -41,7 +36,7 @@ message LogRequest {
 
 // The response message containing status of saving log data
 message LogReply {
-  LogStatus status = 1;
+  string key = 1;
 }
 
 // The request message containing the key
