@@ -12,6 +12,9 @@ service Logger {
   // Write to Log
   rpc PutLog (PutLogRequest) returns (KeyMessage) {}
 
+  // Write to Log as stream
+  rpc PutLogStream (stream PutLogRequest) returns (stream KeyMessage) {}
+
   // Get Log details by key
   rpc GetLog (KeyMessage) returns (LogDetail) {}
 

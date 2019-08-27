@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/gob"
+	"io"
 	"log"
 
 	timestamp "github.com/golang/protobuf/ptypes"
@@ -89,6 +90,37 @@ func (s *LogServer) PutLog(ctx context.Context, req *pb.PutLogRequest) (*pb.KeyM
 	return &pb.KeyMessage{
 		Key: logDetail.GetKey(),
 	}, nil
+}
+
+// Write to Log as stream
+func (s *LogServer) PutLogStream(stream pb.Logger_PutLogStreamServer) error {
+
+	for {
+		select {
+		case <-stream.Context().Done():
+			return stream.Context().Err() // return to not leak the goroutine
+		default:
+		}
+
+		req, recvErr := stream.Recv()
+		if recvErr == io.EOF {
+			return nil
+		}
+		if recvErr != nil {
+			log.Printf("[PutLogStream()] Error in stream.Recv(): %+v\n", recvErr)
+			return status.Errorf(codes.Internal, "Error receiving message from client.")
+		}
+		km, err := s.PutLog(stream.Context(), req)
+		if err != nil {
+			return err
+		}
+		if err := stream.Send(km); err != nil {
+			log.Printf("[PutLogStream()] Error in stream.Send(%v): %+v\n", km, err)
+			return status.Errorf(codes.Internal, "Error sending message to client.")
+		}
+	}
+
+	return nil
 }
 
 // Get Log by key
