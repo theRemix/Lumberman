@@ -1,9 +1,17 @@
-# Lumberman
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/132562/63731121-1730de80-c823-11e9-8eda-b8b44056944a.png" alt="Lumberman" />
+</p>
 
-Logger service using [gRPC](https://grpc.io/) saving to [bbolt (bolt db)](https://github.com/etcd-io/bbolt)
+<h1 align="center">Lumberman</h1>
+
+<p align="center">
+  <strong>Logger service using [gRPC](https://grpc.io/) stored in [bbolt (bolt db)](https://github.com/etcd-io/bbolt)</strong>
+</p>
+
 
 ## Reference Clients
 
+- [Lumberman-go-client](https://github.com/webmocha/Lumberman-go-client)
 - [Lumberman-node-client](https://github.com/webmocha/Lumberman-node-client)
 
 
