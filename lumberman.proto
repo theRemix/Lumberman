@@ -18,6 +18,9 @@ service Logger {
   // Get all Logs by prefix
   rpc GetLogs (GetLogsRequest) returns (GetLogsReply) {}
 
+  // Get all Logs as stream by prefix
+  rpc GetLogsStream (GetLogsRequest) returns (stream GetLogReply) {}
+
   // Stream Logs by prefix
   rpc StreamLogs (GetLogsRequest) returns (stream GetLogReply) {}
 

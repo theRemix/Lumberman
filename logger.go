@@ -141,6 +141,31 @@ func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.Ge
 	}, nil
 }
 
+// Get all Logs as stream by prefix
+func (s *LogServer) GetLogsStream(req *pb.GetLogsRequest, stream pb.Logger_GetLogsStreamServer) error {
+	prefix := []byte(req.GetPrefix())
+
+	if err := s.db.View(func(tx *bolt.Tx) error {
+		c := tx.Bucket([]byte(logsBucket)).Cursor()
+		for k, v := c.Seek(prefix); k != nil && bytes.HasPrefix(k, prefix); k, v = c.Next() {
+			logReply, err := decodeLog(*bytes.NewBuffer(v))
+			logReply.Key = string(k)
+			if err != nil {
+				log.Printf("[GetLogStream()] Error decoding log (key: %s) : %v\n", k, err)
+				return err
+			}
+
+			stream.Send(logReply)
+		}
+		return nil
+	}); err != nil {
+		log.Printf("[GetLogStream()] Error reading from db: %v\n", err)
+		return status.Errorf(codes.Internal, "Error reading from db (prefix: %s)", prefix)
+	}
+
+	return nil
+}
+
 // Stream Logs by prefix
 func (s *LogServer) StreamLogs(req *pb.GetLogsRequest, stream pb.Logger_StreamLogsServer) error {
 	c := s.getStreamChan(req.GetPrefix())
