@@ -26,8 +26,88 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+// The request message containing prefix
+type PrefixRequest struct {
+	Prefix               string   `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PrefixRequest) Reset()         { *m = PrefixRequest{} }
+func (m *PrefixRequest) String() string { return proto.CompactTextString(m) }
+func (*PrefixRequest) ProtoMessage()    {}
+func (*PrefixRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c351de099da60036, []int{0}
+}
+
+func (m *PrefixRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PrefixRequest.Unmarshal(m, b)
+}
+func (m *PrefixRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PrefixRequest.Marshal(b, m, deterministic)
+}
+func (m *PrefixRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrefixRequest.Merge(m, src)
+}
+func (m *PrefixRequest) XXX_Size() int {
+	return xxx_messageInfo_PrefixRequest.Size(m)
+}
+func (m *PrefixRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrefixRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PrefixRequest proto.InternalMessageInfo
+
+func (m *PrefixRequest) GetPrefix() string {
+	if m != nil {
+		return m.Prefix
+	}
+	return ""
+}
+
+// The message containing key
+type KeyMessage struct {
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *KeyMessage) Reset()         { *m = KeyMessage{} }
+func (m *KeyMessage) String() string { return proto.CompactTextString(m) }
+func (*KeyMessage) ProtoMessage()    {}
+func (*KeyMessage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c351de099da60036, []int{1}
+}
+
+func (m *KeyMessage) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_KeyMessage.Unmarshal(m, b)
+}
+func (m *KeyMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_KeyMessage.Marshal(b, m, deterministic)
+}
+func (m *KeyMessage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_KeyMessage.Merge(m, src)
+}
+func (m *KeyMessage) XXX_Size() int {
+	return xxx_messageInfo_KeyMessage.Size(m)
+}
+func (m *KeyMessage) XXX_DiscardUnknown() {
+	xxx_messageInfo_KeyMessage.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_KeyMessage proto.InternalMessageInfo
+
+func (m *KeyMessage) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
 // The request message containing the log data
-type LogRequest struct {
+type PutLogRequest struct {
 	Prefix               string   `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
 	Data                 string   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -35,127 +115,47 @@ type LogRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *LogRequest) Reset()         { *m = LogRequest{} }
-func (m *LogRequest) String() string { return proto.CompactTextString(m) }
-func (*LogRequest) ProtoMessage()    {}
-func (*LogRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{0}
+func (m *PutLogRequest) Reset()         { *m = PutLogRequest{} }
+func (m *PutLogRequest) String() string { return proto.CompactTextString(m) }
+func (*PutLogRequest) ProtoMessage()    {}
+func (*PutLogRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c351de099da60036, []int{2}
 }
 
-func (m *LogRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LogRequest.Unmarshal(m, b)
+func (m *PutLogRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PutLogRequest.Unmarshal(m, b)
 }
-func (m *LogRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LogRequest.Marshal(b, m, deterministic)
+func (m *PutLogRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PutLogRequest.Marshal(b, m, deterministic)
 }
-func (m *LogRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogRequest.Merge(m, src)
+func (m *PutLogRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PutLogRequest.Merge(m, src)
 }
-func (m *LogRequest) XXX_Size() int {
-	return xxx_messageInfo_LogRequest.Size(m)
+func (m *PutLogRequest) XXX_Size() int {
+	return xxx_messageInfo_PutLogRequest.Size(m)
 }
-func (m *LogRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_LogRequest.DiscardUnknown(m)
+func (m *PutLogRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PutLogRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LogRequest proto.InternalMessageInfo
+var xxx_messageInfo_PutLogRequest proto.InternalMessageInfo
 
-func (m *LogRequest) GetPrefix() string {
+func (m *PutLogRequest) GetPrefix() string {
 	if m != nil {
 		return m.Prefix
 	}
 	return ""
 }
 
-func (m *LogRequest) GetData() string {
+func (m *PutLogRequest) GetData() string {
 	if m != nil {
 		return m.Data
 	}
 	return ""
 }
 
-// The response message containing status of saving log data
-type LogReply struct {
-	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *LogReply) Reset()         { *m = LogReply{} }
-func (m *LogReply) String() string { return proto.CompactTextString(m) }
-func (*LogReply) ProtoMessage()    {}
-func (*LogReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{1}
-}
-
-func (m *LogReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LogReply.Unmarshal(m, b)
-}
-func (m *LogReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LogReply.Marshal(b, m, deterministic)
-}
-func (m *LogReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogReply.Merge(m, src)
-}
-func (m *LogReply) XXX_Size() int {
-	return xxx_messageInfo_LogReply.Size(m)
-}
-func (m *LogReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_LogReply.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LogReply proto.InternalMessageInfo
-
-func (m *LogReply) GetKey() string {
-	if m != nil {
-		return m.Key
-	}
-	return ""
-}
-
-// The request message containing the key
-type GetLogRequest struct {
-	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetLogRequest) Reset()         { *m = GetLogRequest{} }
-func (m *GetLogRequest) String() string { return proto.CompactTextString(m) }
-func (*GetLogRequest) ProtoMessage()    {}
-func (*GetLogRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{2}
-}
-
-func (m *GetLogRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetLogRequest.Unmarshal(m, b)
-}
-func (m *GetLogRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetLogRequest.Marshal(b, m, deterministic)
-}
-func (m *GetLogRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetLogRequest.Merge(m, src)
-}
-func (m *GetLogRequest) XXX_Size() int {
-	return xxx_messageInfo_GetLogRequest.Size(m)
-}
-func (m *GetLogRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetLogRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetLogRequest proto.InternalMessageInfo
-
-func (m *GetLogRequest) GetKey() string {
-	if m != nil {
-		return m.Key
-	}
-	return ""
-}
-
 // The response message containing the log data and timestamp
-type GetLogReply struct {
+type LogDetail struct {
 	Key                  string               `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	Timestamp            *timestamp.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Data                 string               `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
@@ -164,126 +164,86 @@ type GetLogReply struct {
 	XXX_sizecache        int32                `json:"-"`
 }
 
-func (m *GetLogReply) Reset()         { *m = GetLogReply{} }
-func (m *GetLogReply) String() string { return proto.CompactTextString(m) }
-func (*GetLogReply) ProtoMessage()    {}
-func (*GetLogReply) Descriptor() ([]byte, []int) {
+func (m *LogDetail) Reset()         { *m = LogDetail{} }
+func (m *LogDetail) String() string { return proto.CompactTextString(m) }
+func (*LogDetail) ProtoMessage()    {}
+func (*LogDetail) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c351de099da60036, []int{3}
 }
 
-func (m *GetLogReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetLogReply.Unmarshal(m, b)
+func (m *LogDetail) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LogDetail.Unmarshal(m, b)
 }
-func (m *GetLogReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetLogReply.Marshal(b, m, deterministic)
+func (m *LogDetail) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LogDetail.Marshal(b, m, deterministic)
 }
-func (m *GetLogReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetLogReply.Merge(m, src)
+func (m *LogDetail) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogDetail.Merge(m, src)
 }
-func (m *GetLogReply) XXX_Size() int {
-	return xxx_messageInfo_GetLogReply.Size(m)
+func (m *LogDetail) XXX_Size() int {
+	return xxx_messageInfo_LogDetail.Size(m)
 }
-func (m *GetLogReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetLogReply.DiscardUnknown(m)
+func (m *LogDetail) XXX_DiscardUnknown() {
+	xxx_messageInfo_LogDetail.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetLogReply proto.InternalMessageInfo
+var xxx_messageInfo_LogDetail proto.InternalMessageInfo
 
-func (m *GetLogReply) GetKey() string {
+func (m *LogDetail) GetKey() string {
 	if m != nil {
 		return m.Key
 	}
 	return ""
 }
 
-func (m *GetLogReply) GetTimestamp() *timestamp.Timestamp {
+func (m *LogDetail) GetTimestamp() *timestamp.Timestamp {
 	if m != nil {
 		return m.Timestamp
 	}
 	return nil
 }
 
-func (m *GetLogReply) GetData() string {
+func (m *LogDetail) GetData() string {
 	if m != nil {
 		return m.Data
 	}
 	return ""
 }
 
-// The request message containing the log prefix
-type GetLogsRequest struct {
-	Prefix               string   `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+// The response message containing the logs for prefix
+type LogDetailList struct {
+	Logs                 []*LogDetail `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *GetLogsRequest) Reset()         { *m = GetLogsRequest{} }
-func (m *GetLogsRequest) String() string { return proto.CompactTextString(m) }
-func (*GetLogsRequest) ProtoMessage()    {}
-func (*GetLogsRequest) Descriptor() ([]byte, []int) {
+func (m *LogDetailList) Reset()         { *m = LogDetailList{} }
+func (m *LogDetailList) String() string { return proto.CompactTextString(m) }
+func (*LogDetailList) ProtoMessage()    {}
+func (*LogDetailList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c351de099da60036, []int{4}
 }
 
-func (m *GetLogsRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetLogsRequest.Unmarshal(m, b)
+func (m *LogDetailList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LogDetailList.Unmarshal(m, b)
 }
-func (m *GetLogsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetLogsRequest.Marshal(b, m, deterministic)
+func (m *LogDetailList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LogDetailList.Marshal(b, m, deterministic)
 }
-func (m *GetLogsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetLogsRequest.Merge(m, src)
+func (m *LogDetailList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogDetailList.Merge(m, src)
 }
-func (m *GetLogsRequest) XXX_Size() int {
-	return xxx_messageInfo_GetLogsRequest.Size(m)
+func (m *LogDetailList) XXX_Size() int {
+	return xxx_messageInfo_LogDetailList.Size(m)
 }
-func (m *GetLogsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetLogsRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetLogsRequest proto.InternalMessageInfo
-
-func (m *GetLogsRequest) GetPrefix() string {
-	if m != nil {
-		return m.Prefix
-	}
-	return ""
+func (m *LogDetailList) XXX_DiscardUnknown() {
+	xxx_messageInfo_LogDetailList.DiscardUnknown(m)
 }
 
-// The response message containing the logs for prefix
-type GetLogsReply struct {
-	Logs                 []*GetLogReply `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
-}
+var xxx_messageInfo_LogDetailList proto.InternalMessageInfo
 
-func (m *GetLogsReply) Reset()         { *m = GetLogsReply{} }
-func (m *GetLogsReply) String() string { return proto.CompactTextString(m) }
-func (*GetLogsReply) ProtoMessage()    {}
-func (*GetLogsReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{5}
-}
-
-func (m *GetLogsReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetLogsReply.Unmarshal(m, b)
-}
-func (m *GetLogsReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetLogsReply.Marshal(b, m, deterministic)
-}
-func (m *GetLogsReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetLogsReply.Merge(m, src)
-}
-func (m *GetLogsReply) XXX_Size() int {
-	return xxx_messageInfo_GetLogsReply.Size(m)
-}
-func (m *GetLogsReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetLogsReply.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetLogsReply proto.InternalMessageInfo
-
-func (m *GetLogsReply) GetLogs() []*GetLogReply {
+func (m *LogDetailList) GetLogs() []*LogDetail {
 	if m != nil {
 		return m.Logs
 	}
@@ -291,119 +251,79 @@ func (m *GetLogsReply) GetLogs() []*GetLogReply {
 }
 
 // The response message containing all prefixes
-type ListPrefixesReply struct {
+type PrefixesList struct {
 	Prefixes             []string `protobuf:"bytes,1,rep,name=prefixes,proto3" json:"prefixes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListPrefixesReply) Reset()         { *m = ListPrefixesReply{} }
-func (m *ListPrefixesReply) String() string { return proto.CompactTextString(m) }
-func (*ListPrefixesReply) ProtoMessage()    {}
-func (*ListPrefixesReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{6}
+func (m *PrefixesList) Reset()         { *m = PrefixesList{} }
+func (m *PrefixesList) String() string { return proto.CompactTextString(m) }
+func (*PrefixesList) ProtoMessage()    {}
+func (*PrefixesList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c351de099da60036, []int{5}
 }
 
-func (m *ListPrefixesReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListPrefixesReply.Unmarshal(m, b)
+func (m *PrefixesList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PrefixesList.Unmarshal(m, b)
 }
-func (m *ListPrefixesReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListPrefixesReply.Marshal(b, m, deterministic)
+func (m *PrefixesList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PrefixesList.Marshal(b, m, deterministic)
 }
-func (m *ListPrefixesReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListPrefixesReply.Merge(m, src)
+func (m *PrefixesList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrefixesList.Merge(m, src)
 }
-func (m *ListPrefixesReply) XXX_Size() int {
-	return xxx_messageInfo_ListPrefixesReply.Size(m)
+func (m *PrefixesList) XXX_Size() int {
+	return xxx_messageInfo_PrefixesList.Size(m)
 }
-func (m *ListPrefixesReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListPrefixesReply.DiscardUnknown(m)
+func (m *PrefixesList) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrefixesList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListPrefixesReply proto.InternalMessageInfo
+var xxx_messageInfo_PrefixesList proto.InternalMessageInfo
 
-func (m *ListPrefixesReply) GetPrefixes() []string {
+func (m *PrefixesList) GetPrefixes() []string {
 	if m != nil {
 		return m.Prefixes
 	}
 	return nil
 }
 
-// The request message containing all keys by prefix
-type ListLogsRequest struct {
-	Prefix               string   `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *ListLogsRequest) Reset()         { *m = ListLogsRequest{} }
-func (m *ListLogsRequest) String() string { return proto.CompactTextString(m) }
-func (*ListLogsRequest) ProtoMessage()    {}
-func (*ListLogsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{7}
-}
-
-func (m *ListLogsRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListLogsRequest.Unmarshal(m, b)
-}
-func (m *ListLogsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListLogsRequest.Marshal(b, m, deterministic)
-}
-func (m *ListLogsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListLogsRequest.Merge(m, src)
-}
-func (m *ListLogsRequest) XXX_Size() int {
-	return xxx_messageInfo_ListLogsRequest.Size(m)
-}
-func (m *ListLogsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListLogsRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ListLogsRequest proto.InternalMessageInfo
-
-func (m *ListLogsRequest) GetPrefix() string {
-	if m != nil {
-		return m.Prefix
-	}
-	return ""
-}
-
 // The response message containing the keys for prefix
-type ListLogsReply struct {
+type KeysList struct {
 	Keys                 []string `protobuf:"bytes,1,rep,name=keys,proto3" json:"keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListLogsReply) Reset()         { *m = ListLogsReply{} }
-func (m *ListLogsReply) String() string { return proto.CompactTextString(m) }
-func (*ListLogsReply) ProtoMessage()    {}
-func (*ListLogsReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c351de099da60036, []int{8}
+func (m *KeysList) Reset()         { *m = KeysList{} }
+func (m *KeysList) String() string { return proto.CompactTextString(m) }
+func (*KeysList) ProtoMessage()    {}
+func (*KeysList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c351de099da60036, []int{6}
 }
 
-func (m *ListLogsReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListLogsReply.Unmarshal(m, b)
+func (m *KeysList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_KeysList.Unmarshal(m, b)
 }
-func (m *ListLogsReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListLogsReply.Marshal(b, m, deterministic)
+func (m *KeysList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_KeysList.Marshal(b, m, deterministic)
 }
-func (m *ListLogsReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListLogsReply.Merge(m, src)
+func (m *KeysList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_KeysList.Merge(m, src)
 }
-func (m *ListLogsReply) XXX_Size() int {
-	return xxx_messageInfo_ListLogsReply.Size(m)
+func (m *KeysList) XXX_Size() int {
+	return xxx_messageInfo_KeysList.Size(m)
 }
-func (m *ListLogsReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListLogsReply.DiscardUnknown(m)
+func (m *KeysList) XXX_DiscardUnknown() {
+	xxx_messageInfo_KeysList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListLogsReply proto.InternalMessageInfo
+var xxx_messageInfo_KeysList proto.InternalMessageInfo
 
-func (m *ListLogsReply) GetKeys() []string {
+func (m *KeysList) GetKeys() []string {
 	if m != nil {
 		return m.Keys
 	}
@@ -411,47 +331,45 @@ func (m *ListLogsReply) GetKeys() []string {
 }
 
 func init() {
-	proto.RegisterType((*LogRequest)(nil), "pb.LogRequest")
-	proto.RegisterType((*LogReply)(nil), "pb.LogReply")
-	proto.RegisterType((*GetLogRequest)(nil), "pb.GetLogRequest")
-	proto.RegisterType((*GetLogReply)(nil), "pb.GetLogReply")
-	proto.RegisterType((*GetLogsRequest)(nil), "pb.GetLogsRequest")
-	proto.RegisterType((*GetLogsReply)(nil), "pb.GetLogsReply")
-	proto.RegisterType((*ListPrefixesReply)(nil), "pb.ListPrefixesReply")
-	proto.RegisterType((*ListLogsRequest)(nil), "pb.ListLogsRequest")
-	proto.RegisterType((*ListLogsReply)(nil), "pb.ListLogsReply")
+	proto.RegisterType((*PrefixRequest)(nil), "pb.PrefixRequest")
+	proto.RegisterType((*KeyMessage)(nil), "pb.KeyMessage")
+	proto.RegisterType((*PutLogRequest)(nil), "pb.PutLogRequest")
+	proto.RegisterType((*LogDetail)(nil), "pb.LogDetail")
+	proto.RegisterType((*LogDetailList)(nil), "pb.LogDetailList")
+	proto.RegisterType((*PrefixesList)(nil), "pb.PrefixesList")
+	proto.RegisterType((*KeysList)(nil), "pb.KeysList")
 }
 
 func init() { proto.RegisterFile("lumberman.proto", fileDescriptor_c351de099da60036) }
 
 var fileDescriptor_c351de099da60036 = []byte{
-	// 410 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0x4d, 0xab, 0xd3, 0x40,
-	0x14, 0x6d, 0x3e, 0x88, 0xed, 0xed, 0xf7, 0x15, 0x4b, 0x89, 0x82, 0x75, 0x8a, 0x50, 0x37, 0xa9,
-	0xb6, 0x0a, 0xdd, 0x09, 0x82, 0xb8, 0xc9, 0x42, 0xa2, 0x2b, 0x77, 0x09, 0x4e, 0x43, 0x69, 0xe2,
-	0x8c, 0xc9, 0x14, 0x5e, 0xfe, 0xfa, 0x5b, 0x3d, 0x32, 0x93, 0x49, 0xd2, 0x8f, 0xc7, 0x7b, 0xbb,
-	0x99, 0x3b, 0xe7, 0xdc, 0x73, 0xce, 0xbd, 0x09, 0x8c, 0x93, 0x53, 0x1a, 0xd1, 0x2c, 0x0d, 0xff,
-	0x79, 0x3c, 0x63, 0x82, 0xa1, 0xc9, 0x23, 0xf7, 0x75, 0xcc, 0x58, 0x9c, 0xd0, 0xb5, 0xac, 0x44,
-	0xa7, 0xfd, 0x9a, 0xa6, 0x5c, 0x14, 0x0a, 0xe0, 0xbe, 0xbd, 0x7c, 0x14, 0x87, 0x94, 0xe6, 0x22,
-	0x4c, 0xb9, 0x02, 0x90, 0x1d, 0x80, 0xcf, 0xe2, 0x80, 0xfe, 0x3f, 0xd1, 0x5c, 0xe0, 0x0c, 0x1c,
-	0x9e, 0xd1, 0xfd, 0xe1, 0x6e, 0x6e, 0x2c, 0x8c, 0x55, 0x2f, 0xa8, 0x6e, 0x88, 0x60, 0xff, 0x0d,
-	0x45, 0x38, 0x37, 0x65, 0x55, 0x9e, 0xc9, 0x1b, 0xe8, 0x4a, 0x26, 0x4f, 0x0a, 0x9c, 0x80, 0x75,
-	0xa4, 0x45, 0x45, 0x2a, 0x8f, 0xe4, 0x1d, 0x0c, 0x7f, 0x50, 0xd1, 0x6a, 0x7d, 0x0d, 0x49, 0xa1,
-	0xaf, 0x21, 0x37, 0x7b, 0xe0, 0x0e, 0x7a, 0xb5, 0x5d, 0x29, 0xdd, 0xdf, 0xb8, 0x9e, 0x0a, 0xe4,
-	0xe9, 0x40, 0xde, 0x6f, 0x8d, 0x08, 0x1a, 0x70, 0xed, 0xd7, 0x6a, 0xf9, 0x5d, 0xc1, 0x48, 0xc9,
-	0xe5, 0x4f, 0xa4, 0x25, 0x5b, 0x18, 0xd4, 0xc8, 0xd2, 0xd9, 0x12, 0xec, 0x84, 0xc5, 0xf9, 0xdc,
-	0x58, 0x58, 0xab, 0xfe, 0x66, 0xec, 0xf1, 0xc8, 0x6b, 0x19, 0x0f, 0xe4, 0x23, 0x59, 0xc3, 0xd4,
-	0x3f, 0xe4, 0xe2, 0xa7, 0x6c, 0x41, 0x2b, 0xa6, 0x0b, 0x5d, 0x5e, 0x15, 0x24, 0xbb, 0x17, 0xd4,
-	0x77, 0xf2, 0x01, 0xc6, 0x25, 0xe1, 0x39, 0x86, 0x96, 0x30, 0x6c, 0xa0, 0x65, 0x5f, 0x04, 0xfb,
-	0x48, 0x0b, 0xdd, 0x53, 0x9e, 0x37, 0xf7, 0x26, 0x38, 0x3e, 0x8b, 0x63, 0x9a, 0xe1, 0x7b, 0xb0,
-	0x7c, 0x16, 0xe3, 0xa8, 0x74, 0xda, 0xac, 0xc0, 0x1d, 0xd4, 0x77, 0x9e, 0x14, 0xa4, 0x83, 0x1e,
-	0x38, 0x2a, 0x07, 0x4e, 0xdb, 0x99, 0x14, 0xf8, 0x32, 0x26, 0xe9, 0xe0, 0x27, 0x78, 0x51, 0xcd,
-	0x05, 0xb1, 0x79, 0xd5, 0xee, 0xdd, 0xc9, 0x59, 0x4d, 0x51, 0x76, 0xfa, 0x33, 0xc8, 0x7f, 0x89,
-	0x8c, 0x86, 0xe9, 0x4d, 0xe2, 0xb5, 0xd4, 0x47, 0x03, 0xbf, 0x00, 0x28, 0xca, 0xa3, 0x7a, 0x37,
-	0x69, 0x5f, 0x61, 0xd0, 0x5e, 0x03, 0xce, 0xae, 0x3e, 0x98, 0xef, 0xe5, 0xef, 0xe1, 0xbe, 0x92,
-	0xb3, 0xb8, 0x5c, 0x18, 0xe9, 0xe0, 0x67, 0xe8, 0xea, 0x59, 0xe3, 0x4b, 0x0d, 0x6a, 0xcb, 0x4e,
-	0xcf, 0x8b, 0x92, 0xf5, 0xcd, 0xfe, 0x63, 0xf2, 0x28, 0x72, 0xa4, 0xc8, 0xf6, 0x21, 0x00, 0x00,
-	0xff, 0xff, 0x5b, 0x04, 0x72, 0xc2, 0xa8, 0x03, 0x00, 0x00,
+	// 406 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0x41, 0x6f, 0xd4, 0x30,
+	0x10, 0x85, 0x93, 0x6c, 0x14, 0x36, 0xd3, 0x0d, 0xb4, 0x3e, 0x54, 0x2b, 0x23, 0x95, 0xe2, 0x0b,
+	0x05, 0xa9, 0x29, 0x04, 0x21, 0x21, 0xb8, 0x21, 0x10, 0x87, 0x06, 0xa9, 0x0a, 0x3d, 0x71, 0x4b,
+	0xc4, 0xd4, 0x8a, 0x36, 0xc1, 0x26, 0x76, 0x24, 0xf2, 0xa7, 0xf9, 0x0d, 0xc8, 0x76, 0x92, 0xed,
+	0x6e, 0x2b, 0xa1, 0xde, 0xc6, 0xe3, 0xef, 0xcd, 0x9b, 0x3c, 0x07, 0x9e, 0x34, 0x7d, 0x5b, 0x61,
+	0xd7, 0x96, 0xbf, 0x52, 0xd9, 0x09, 0x2d, 0x48, 0x20, 0x2b, 0xfa, 0x94, 0x0b, 0xc1, 0x1b, 0xbc,
+	0xb0, 0x9d, 0xaa, 0xbf, 0xb9, 0xc0, 0x56, 0xea, 0xc1, 0x01, 0xf4, 0xd9, 0xfe, 0xa5, 0xae, 0x5b,
+	0x54, 0xba, 0x6c, 0xa5, 0x03, 0xd8, 0x0b, 0x48, 0xae, 0x3a, 0xbc, 0xa9, 0xff, 0x14, 0xf8, 0xbb,
+	0x47, 0xa5, 0xc9, 0x31, 0x44, 0xd2, 0x36, 0xd6, 0xfe, 0xa9, 0x7f, 0x16, 0x17, 0xe3, 0x89, 0x9d,
+	0x00, 0x5c, 0xe2, 0xf0, 0x0d, 0x95, 0x2a, 0x39, 0x92, 0x43, 0x58, 0x6c, 0x70, 0x18, 0x11, 0x53,
+	0xb2, 0x8f, 0x90, 0x5c, 0xf5, 0x3a, 0x17, 0xfc, 0x3f, 0x83, 0x08, 0x81, 0xf0, 0x67, 0xa9, 0xcb,
+	0x75, 0x60, 0xbb, 0xb6, 0x66, 0x1b, 0x88, 0x73, 0xc1, 0x3f, 0xa3, 0x2e, 0xeb, 0xe6, 0xee, 0x6c,
+	0xf2, 0x1e, 0xe2, 0x79, 0x6f, 0xab, 0x3b, 0xc8, 0x68, 0xea, 0xbe, 0x2c, 0x9d, 0xbe, 0x2c, 0xbd,
+	0x9e, 0x88, 0x62, 0x0b, 0xcf, 0x66, 0x8b, 0x5b, 0x66, 0x19, 0x24, 0xb3, 0x59, 0x5e, 0x2b, 0x4d,
+	0x9e, 0x43, 0xd8, 0x08, 0xae, 0xd6, 0xfe, 0xe9, 0xe2, 0xec, 0x20, 0x4b, 0x52, 0x59, 0xa5, 0x33,
+	0x50, 0xd8, 0x2b, 0xf6, 0x0a, 0x56, 0x2e, 0x26, 0x54, 0x56, 0x42, 0x61, 0x29, 0xc7, 0xb3, 0x95,
+	0xc5, 0xc5, 0x7c, 0x66, 0x27, 0xb0, 0xbc, 0xc4, 0xc1, 0x71, 0x04, 0xc2, 0x0d, 0x0e, 0x13, 0x63,
+	0xeb, 0xec, 0x6f, 0x00, 0x51, 0x2e, 0x38, 0xc7, 0x8e, 0x9c, 0x43, 0xe4, 0x42, 0x23, 0x47, 0xc6,
+	0x75, 0x27, 0x40, 0xfa, 0xd8, 0xb4, 0xb6, 0x99, 0x33, 0x8f, 0xbc, 0x84, 0xe8, 0x2b, 0x5a, 0x7c,
+	0xef, 0x8e, 0xee, 0x2e, 0xcd, 0x3c, 0xf2, 0x06, 0x1e, 0x39, 0x54, 0x8d, 0xa3, 0x6f, 0x3f, 0x32,
+	0x3d, 0xda, 0xc1, 0xcd, 0xa6, 0xcc, 0x23, 0xef, 0x20, 0x19, 0x25, 0xdf, 0x75, 0x87, 0x65, 0x7b,
+	0x9f, 0x70, 0xdf, 0xe7, 0xb5, 0x6f, 0x64, 0xd7, 0x66, 0x88, 0xe0, 0x0f, 0x92, 0x7d, 0x80, 0x95,
+	0xf1, 0x9d, 0x52, 0x25, 0xc7, 0x77, 0x1e, 0xf4, 0x8b, 0xf9, 0x8f, 0xe9, 0xe1, 0x76, 0x9a, 0xcb,
+	0x9e, 0x79, 0xe4, 0x1c, 0x96, 0xa6, 0x32, 0x29, 0xdf, 0xe7, 0xb6, 0x1a, 0xc3, 0x19, 0xf1, 0x4f,
+	0xe1, 0x8f, 0x40, 0x56, 0x55, 0x64, 0x07, 0xbf, 0xfd, 0x17, 0x00, 0x00, 0xff, 0xff, 0xbb, 0xf2,
+	0x88, 0x1c, 0x45, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -467,19 +385,19 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type LoggerClient interface {
 	// Write to Log
-	Log(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*LogReply, error)
-	// Get Log by key
-	GetLog(ctx context.Context, in *GetLogRequest, opts ...grpc.CallOption) (*GetLogReply, error)
+	PutLog(ctx context.Context, in *PutLogRequest, opts ...grpc.CallOption) (*KeyMessage, error)
+	// Get Log details by key
+	GetLog(ctx context.Context, in *KeyMessage, opts ...grpc.CallOption) (*LogDetail, error)
 	// Get all Logs by prefix
-	GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsReply, error)
+	GetLogs(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (*LogDetailList, error)
 	// Get all Logs as stream by prefix
-	GetLogsStream(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (Logger_GetLogsStreamClient, error)
-	// Stream Logs by prefix
-	StreamLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (Logger_StreamLogsClient, error)
+	GetLogsStream(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (Logger_GetLogsStreamClient, error)
+	// Tail Logs as stream by prefix
+	TailLogStream(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (Logger_TailLogStreamClient, error)
 	// List Log prefixes
-	ListPrefixes(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListPrefixesReply, error)
+	ListPrefixes(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*PrefixesList, error)
 	// List Log keys by prefix
-	ListLogs(ctx context.Context, in *ListLogsRequest, opts ...grpc.CallOption) (*ListLogsReply, error)
+	ListKeys(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (*KeysList, error)
 }
 
 type loggerClient struct {
@@ -490,17 +408,17 @@ func NewLoggerClient(cc *grpc.ClientConn) LoggerClient {
 	return &loggerClient{cc}
 }
 
-func (c *loggerClient) Log(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*LogReply, error) {
-	out := new(LogReply)
-	err := c.cc.Invoke(ctx, "/pb.Logger/Log", in, out, opts...)
+func (c *loggerClient) PutLog(ctx context.Context, in *PutLogRequest, opts ...grpc.CallOption) (*KeyMessage, error) {
+	out := new(KeyMessage)
+	err := c.cc.Invoke(ctx, "/pb.Logger/PutLog", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *loggerClient) GetLog(ctx context.Context, in *GetLogRequest, opts ...grpc.CallOption) (*GetLogReply, error) {
-	out := new(GetLogReply)
+func (c *loggerClient) GetLog(ctx context.Context, in *KeyMessage, opts ...grpc.CallOption) (*LogDetail, error) {
+	out := new(LogDetail)
 	err := c.cc.Invoke(ctx, "/pb.Logger/GetLog", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -508,8 +426,8 @@ func (c *loggerClient) GetLog(ctx context.Context, in *GetLogRequest, opts ...gr
 	return out, nil
 }
 
-func (c *loggerClient) GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsReply, error) {
-	out := new(GetLogsReply)
+func (c *loggerClient) GetLogs(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (*LogDetailList, error) {
+	out := new(LogDetailList)
 	err := c.cc.Invoke(ctx, "/pb.Logger/GetLogs", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -517,7 +435,7 @@ func (c *loggerClient) GetLogs(ctx context.Context, in *GetLogsRequest, opts ...
 	return out, nil
 }
 
-func (c *loggerClient) GetLogsStream(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (Logger_GetLogsStreamClient, error) {
+func (c *loggerClient) GetLogsStream(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (Logger_GetLogsStreamClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_Logger_serviceDesc.Streams[0], "/pb.Logger/GetLogsStream", opts...)
 	if err != nil {
 		return nil, err
@@ -533,7 +451,7 @@ func (c *loggerClient) GetLogsStream(ctx context.Context, in *GetLogsRequest, op
 }
 
 type Logger_GetLogsStreamClient interface {
-	Recv() (*GetLogReply, error)
+	Recv() (*LogDetail, error)
 	grpc.ClientStream
 }
 
@@ -541,20 +459,20 @@ type loggerGetLogsStreamClient struct {
 	grpc.ClientStream
 }
 
-func (x *loggerGetLogsStreamClient) Recv() (*GetLogReply, error) {
-	m := new(GetLogReply)
+func (x *loggerGetLogsStreamClient) Recv() (*LogDetail, error) {
+	m := new(LogDetail)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *loggerClient) StreamLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (Logger_StreamLogsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Logger_serviceDesc.Streams[1], "/pb.Logger/StreamLogs", opts...)
+func (c *loggerClient) TailLogStream(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (Logger_TailLogStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Logger_serviceDesc.Streams[1], "/pb.Logger/TailLogStream", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &loggerStreamLogsClient{stream}
+	x := &loggerTailLogStreamClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -564,25 +482,25 @@ func (c *loggerClient) StreamLogs(ctx context.Context, in *GetLogsRequest, opts 
 	return x, nil
 }
 
-type Logger_StreamLogsClient interface {
-	Recv() (*GetLogReply, error)
+type Logger_TailLogStreamClient interface {
+	Recv() (*LogDetail, error)
 	grpc.ClientStream
 }
 
-type loggerStreamLogsClient struct {
+type loggerTailLogStreamClient struct {
 	grpc.ClientStream
 }
 
-func (x *loggerStreamLogsClient) Recv() (*GetLogReply, error) {
-	m := new(GetLogReply)
+func (x *loggerTailLogStreamClient) Recv() (*LogDetail, error) {
+	m := new(LogDetail)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *loggerClient) ListPrefixes(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListPrefixesReply, error) {
-	out := new(ListPrefixesReply)
+func (c *loggerClient) ListPrefixes(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*PrefixesList, error) {
+	out := new(PrefixesList)
 	err := c.cc.Invoke(ctx, "/pb.Logger/ListPrefixes", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -590,9 +508,9 @@ func (c *loggerClient) ListPrefixes(ctx context.Context, in *empty.Empty, opts .
 	return out, nil
 }
 
-func (c *loggerClient) ListLogs(ctx context.Context, in *ListLogsRequest, opts ...grpc.CallOption) (*ListLogsReply, error) {
-	out := new(ListLogsReply)
-	err := c.cc.Invoke(ctx, "/pb.Logger/ListLogs", in, out, opts...)
+func (c *loggerClient) ListKeys(ctx context.Context, in *PrefixRequest, opts ...grpc.CallOption) (*KeysList, error) {
+	out := new(KeysList)
+	err := c.cc.Invoke(ctx, "/pb.Logger/ListKeys", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -602,71 +520,71 @@ func (c *loggerClient) ListLogs(ctx context.Context, in *ListLogsRequest, opts .
 // LoggerServer is the server API for Logger service.
 type LoggerServer interface {
 	// Write to Log
-	Log(context.Context, *LogRequest) (*LogReply, error)
-	// Get Log by key
-	GetLog(context.Context, *GetLogRequest) (*GetLogReply, error)
+	PutLog(context.Context, *PutLogRequest) (*KeyMessage, error)
+	// Get Log details by key
+	GetLog(context.Context, *KeyMessage) (*LogDetail, error)
 	// Get all Logs by prefix
-	GetLogs(context.Context, *GetLogsRequest) (*GetLogsReply, error)
+	GetLogs(context.Context, *PrefixRequest) (*LogDetailList, error)
 	// Get all Logs as stream by prefix
-	GetLogsStream(*GetLogsRequest, Logger_GetLogsStreamServer) error
-	// Stream Logs by prefix
-	StreamLogs(*GetLogsRequest, Logger_StreamLogsServer) error
+	GetLogsStream(*PrefixRequest, Logger_GetLogsStreamServer) error
+	// Tail Logs as stream by prefix
+	TailLogStream(*PrefixRequest, Logger_TailLogStreamServer) error
 	// List Log prefixes
-	ListPrefixes(context.Context, *empty.Empty) (*ListPrefixesReply, error)
+	ListPrefixes(context.Context, *empty.Empty) (*PrefixesList, error)
 	// List Log keys by prefix
-	ListLogs(context.Context, *ListLogsRequest) (*ListLogsReply, error)
+	ListKeys(context.Context, *PrefixRequest) (*KeysList, error)
 }
 
 // UnimplementedLoggerServer can be embedded to have forward compatible implementations.
 type UnimplementedLoggerServer struct {
 }
 
-func (*UnimplementedLoggerServer) Log(ctx context.Context, req *LogRequest) (*LogReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Log not implemented")
+func (*UnimplementedLoggerServer) PutLog(ctx context.Context, req *PutLogRequest) (*KeyMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutLog not implemented")
 }
-func (*UnimplementedLoggerServer) GetLog(ctx context.Context, req *GetLogRequest) (*GetLogReply, error) {
+func (*UnimplementedLoggerServer) GetLog(ctx context.Context, req *KeyMessage) (*LogDetail, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLog not implemented")
 }
-func (*UnimplementedLoggerServer) GetLogs(ctx context.Context, req *GetLogsRequest) (*GetLogsReply, error) {
+func (*UnimplementedLoggerServer) GetLogs(ctx context.Context, req *PrefixRequest) (*LogDetailList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLogs not implemented")
 }
-func (*UnimplementedLoggerServer) GetLogsStream(req *GetLogsRequest, srv Logger_GetLogsStreamServer) error {
+func (*UnimplementedLoggerServer) GetLogsStream(req *PrefixRequest, srv Logger_GetLogsStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetLogsStream not implemented")
 }
-func (*UnimplementedLoggerServer) StreamLogs(req *GetLogsRequest, srv Logger_StreamLogsServer) error {
-	return status.Errorf(codes.Unimplemented, "method StreamLogs not implemented")
+func (*UnimplementedLoggerServer) TailLogStream(req *PrefixRequest, srv Logger_TailLogStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method TailLogStream not implemented")
 }
-func (*UnimplementedLoggerServer) ListPrefixes(ctx context.Context, req *empty.Empty) (*ListPrefixesReply, error) {
+func (*UnimplementedLoggerServer) ListPrefixes(ctx context.Context, req *empty.Empty) (*PrefixesList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPrefixes not implemented")
 }
-func (*UnimplementedLoggerServer) ListLogs(ctx context.Context, req *ListLogsRequest) (*ListLogsReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListLogs not implemented")
+func (*UnimplementedLoggerServer) ListKeys(ctx context.Context, req *PrefixRequest) (*KeysList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListKeys not implemented")
 }
 
 func RegisterLoggerServer(s *grpc.Server, srv LoggerServer) {
 	s.RegisterService(&_Logger_serviceDesc, srv)
 }
 
-func _Logger_Log_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
+func _Logger_PutLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutLogRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LoggerServer).Log(ctx, in)
+		return srv.(LoggerServer).PutLog(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.Logger/Log",
+		FullMethod: "/pb.Logger/PutLog",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LoggerServer).Log(ctx, req.(*LogRequest))
+		return srv.(LoggerServer).PutLog(ctx, req.(*PutLogRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Logger_GetLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLogRequest)
+	in := new(KeyMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -678,13 +596,13 @@ func _Logger_GetLog_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/pb.Logger/GetLog",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LoggerServer).GetLog(ctx, req.(*GetLogRequest))
+		return srv.(LoggerServer).GetLog(ctx, req.(*KeyMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Logger_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLogsRequest)
+	in := new(PrefixRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -696,13 +614,13 @@ func _Logger_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/pb.Logger/GetLogs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LoggerServer).GetLogs(ctx, req.(*GetLogsRequest))
+		return srv.(LoggerServer).GetLogs(ctx, req.(*PrefixRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Logger_GetLogsStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetLogsRequest)
+	m := new(PrefixRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
@@ -710,7 +628,7 @@ func _Logger_GetLogsStream_Handler(srv interface{}, stream grpc.ServerStream) er
 }
 
 type Logger_GetLogsStreamServer interface {
-	Send(*GetLogReply) error
+	Send(*LogDetail) error
 	grpc.ServerStream
 }
 
@@ -718,28 +636,28 @@ type loggerGetLogsStreamServer struct {
 	grpc.ServerStream
 }
 
-func (x *loggerGetLogsStreamServer) Send(m *GetLogReply) error {
+func (x *loggerGetLogsStreamServer) Send(m *LogDetail) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _Logger_StreamLogs_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetLogsRequest)
+func _Logger_TailLogStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(PrefixRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(LoggerServer).StreamLogs(m, &loggerStreamLogsServer{stream})
+	return srv.(LoggerServer).TailLogStream(m, &loggerTailLogStreamServer{stream})
 }
 
-type Logger_StreamLogsServer interface {
-	Send(*GetLogReply) error
+type Logger_TailLogStreamServer interface {
+	Send(*LogDetail) error
 	grpc.ServerStream
 }
 
-type loggerStreamLogsServer struct {
+type loggerTailLogStreamServer struct {
 	grpc.ServerStream
 }
 
-func (x *loggerStreamLogsServer) Send(m *GetLogReply) error {
+func (x *loggerTailLogStreamServer) Send(m *LogDetail) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -761,20 +679,20 @@ func _Logger_ListPrefixes_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Logger_ListLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListLogsRequest)
+func _Logger_ListKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PrefixRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LoggerServer).ListLogs(ctx, in)
+		return srv.(LoggerServer).ListKeys(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.Logger/ListLogs",
+		FullMethod: "/pb.Logger/ListKeys",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LoggerServer).ListLogs(ctx, req.(*ListLogsRequest))
+		return srv.(LoggerServer).ListKeys(ctx, req.(*PrefixRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -784,8 +702,8 @@ var _Logger_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*LoggerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Log",
-			Handler:    _Logger_Log_Handler,
+			MethodName: "PutLog",
+			Handler:    _Logger_PutLog_Handler,
 		},
 		{
 			MethodName: "GetLog",
@@ -800,8 +718,8 @@ var _Logger_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Logger_ListPrefixes_Handler,
 		},
 		{
-			MethodName: "ListLogs",
-			Handler:    _Logger_ListLogs_Handler,
+			MethodName: "ListKeys",
+			Handler:    _Logger_ListKeys_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -811,8 +729,8 @@ var _Logger_serviceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "StreamLogs",
-			Handler:       _Logger_StreamLogs_Handler,
+			StreamName:    "TailLogStream",
+			Handler:       _Logger_TailLogStream_Handler,
 			ServerStreams: true,
 		},
 	},

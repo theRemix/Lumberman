@@ -10,72 +10,62 @@ import "google/protobuf/timestamp.proto";
 // The Logging service definition.
 service Logger {
   // Write to Log
-  rpc Log (LogRequest) returns (LogReply) {}
+  rpc PutLog (PutLogRequest) returns (KeyMessage) {}
 
-  // Get Log by key
-  rpc GetLog (GetLogRequest) returns (GetLogReply) {}
+  // Get Log details by key
+  rpc GetLog (KeyMessage) returns (LogDetail) {}
 
   // Get all Logs by prefix
-  rpc GetLogs (GetLogsRequest) returns (GetLogsReply) {}
+  rpc GetLogs (PrefixRequest) returns (LogDetailList) {}
 
   // Get all Logs as stream by prefix
-  rpc GetLogsStream (GetLogsRequest) returns (stream GetLogReply) {}
+  rpc GetLogsStream (PrefixRequest) returns (stream LogDetail) {}
 
-  // Stream Logs by prefix
-  rpc StreamLogs (GetLogsRequest) returns (stream GetLogReply) {}
+  // Tail Logs as stream by prefix
+  rpc TailLogStream (PrefixRequest) returns (stream LogDetail) {}
 
   // List Log prefixes
-  rpc ListPrefixes (google.protobuf.Empty) returns (ListPrefixesReply) {}
+  rpc ListPrefixes (google.protobuf.Empty) returns (PrefixesList) {}
 
   // List Log keys by prefix
-  rpc ListLogs (ListLogsRequest) returns (ListLogsReply) {}
+  rpc ListKeys (PrefixRequest) returns (KeysList) {}
+}
+
+// The request message containing prefix
+message PrefixRequest {
+  string prefix = 1;
+}
+
+// The message containing key
+message KeyMessage {
+  string key = 1;
 }
 
 // The request message containing the log data
-message LogRequest {
+message PutLogRequest {
   string prefix = 1;
   string data = 2;
 }
 
-// The response message containing status of saving log data
-message LogReply {
-  string key = 1;
-}
-
-// The request message containing the key
-message GetLogRequest {
-  string key = 1;
-}
-
 // The response message containing the log data and timestamp
-message GetLogReply {
+message LogDetail {
   string key = 1;
   google.protobuf.Timestamp timestamp = 2;
   string data = 3;
 }
 
-// The request message containing the log prefix
-message GetLogsRequest {
-  string prefix = 1;
-}
-
 // The response message containing the logs for prefix
-message GetLogsReply {
-  repeated GetLogReply logs = 1;
+message LogDetailList {
+  repeated LogDetail logs = 1;
 }
 
 // The response message containing all prefixes
-message ListPrefixesReply {
+message PrefixesList {
   repeated string prefixes = 1;
 }
 
-// The request message containing all keys by prefix
-message ListLogsRequest {
-  string prefix = 1;
-}
-
 // The response message containing the keys for prefix
-message ListLogsReply {
+message KeysList {
   repeated string keys = 1;
 }
 

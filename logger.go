@@ -16,13 +16,13 @@ import (
 
 type LogServer struct {
 	db      *bolt.DB
-	streams map[string](chan *pb.GetLogReply)
+	streams map[string](chan *pb.LogDetail)
 }
 
 func NewLogServer(db *bolt.DB) *LogServer {
 	return &LogServer{
 		db:      db,
-		streams: make(map[string](chan *pb.GetLogReply)),
+		streams: make(map[string](chan *pb.LogDetail)),
 	}
 }
 
@@ -41,58 +41,58 @@ func (s *LogServer) storePrefix(prefix string) {
 	}
 }
 
-func (s *LogServer) broadcastToStreams(prefix string, logReply *pb.GetLogReply) {
+func (s *LogServer) broadcastToStreams(prefix string, logDetail *pb.LogDetail) {
 	if stream, ok := s.streams[prefix]; ok {
-		stream <- logReply
+		stream <- logDetail
 	}
 }
 
-func (s *LogServer) getStreamChan(prefix string) chan *pb.GetLogReply {
+func (s *LogServer) getStreamChan(prefix string) chan *pb.LogDetail {
 	if stream, ok := s.streams[prefix]; ok {
 		return stream
 	}
-	stream := make(chan *pb.GetLogReply)
+	stream := make(chan *pb.LogDetail)
 	s.streams[prefix] = stream
 	return stream
 }
 
 // Write to Log
-func (s *LogServer) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogReply, error) {
+func (s *LogServer) PutLog(ctx context.Context, req *pb.PutLogRequest) (*pb.KeyMessage, error) {
 
-	logReply := &pb.GetLogReply{
+	logDetail := &pb.LogDetail{
 		Data:      req.GetData(),
 		Timestamp: timestamp.TimestampNow(),
 	}
-	logReply.Key = req.GetPrefix() + "|" + timestamp.TimestampString(logReply.GetTimestamp())
+	logDetail.Key = req.GetPrefix() + "|" + timestamp.TimestampString(logDetail.GetTimestamp())
 
-	logBytes, encodeLogErr := encodeLog(logReply)
+	logBytes, encodeLogErr := encodeLog(logDetail)
 
 	if encodeLogErr != nil {
-		log.Printf("[Log()] Error encoding GetLogReply with gob: %+v\n", encodeLogErr)
-		return nil, status.Error(codes.Internal, "Error encoding GetLogReply")
+		log.Printf("[Log()] Error encoding LogDetail with gob: %+v\n", encodeLogErr)
+		return nil, status.Error(codes.Internal, "Error encoding LogDetail")
 	}
 
 	if dbErr := s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(logsBucket))
-		key := []byte(logReply.GetKey())
+		key := []byte(logDetail.GetKey())
 		err := b.Put(key, logBytes)
 		return err
 	}); dbErr != nil {
 		log.Printf("[Log()] Error saving to db: %+v\n", dbErr)
-		return nil, status.Errorf(codes.Internal, "Error saving to db (key: %s)", logReply.GetKey())
+		return nil, status.Errorf(codes.Internal, "Error saving to db (key: %s)", logDetail.GetKey())
 	}
 
-	go s.broadcastToStreams(req.GetPrefix(), logReply)
+	go s.broadcastToStreams(req.GetPrefix(), logDetail)
 
 	go s.storePrefix(req.GetPrefix())
 
-	return &pb.LogReply{
-		Key: logReply.GetKey(),
+	return &pb.KeyMessage{
+		Key: logDetail.GetKey(),
 	}, nil
 }
 
 // Get Log by key
-func (s *LogServer) GetLog(ctx context.Context, req *pb.GetLogRequest) (*pb.GetLogReply, error) {
+func (s *LogServer) GetLog(ctx context.Context, req *pb.KeyMessage) (*pb.LogDetail, error) {
 	key := []byte(req.GetKey())
 	var logReplyBytes []byte
 
@@ -105,30 +105,30 @@ func (s *LogServer) GetLog(ctx context.Context, req *pb.GetLogRequest) (*pb.GetL
 		return nil, status.Errorf(codes.Internal, "Error reading from db (key: %s)", key)
 	}
 
-	logReply, err := decodeLog(*bytes.NewBuffer(logReplyBytes))
+	logDetail, err := decodeLog(*bytes.NewBuffer(logReplyBytes))
 	if err != nil {
-		log.Printf("[GetLog()] Error decoding pb.GetLogReply (key: %s) with gob: %v\n", key, err)
-		return nil, status.Errorf(codes.Internal, "Error decoding pb.GetLogReply (key: %s)", key)
+		log.Printf("[GetLog()] Error decoding pb.LogDetail (key: %s) with gob: %v\n", key, err)
+		return nil, status.Errorf(codes.Internal, "Error decoding pb.LogDetail (key: %s)", key)
 	}
 
-	return logReply, nil
+	return logDetail, nil
 }
 
 // Get all Logs by prefix
-func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.GetLogsReply, error) {
+func (s *LogServer) GetLogs(ctx context.Context, req *pb.PrefixRequest) (*pb.LogDetailList, error) {
 	prefix := []byte(req.GetPrefix())
-	logs := []*pb.GetLogReply{}
+	logs := []*pb.LogDetail{}
 
 	if err := s.db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(logsBucket)).Cursor()
 		for k, v := c.Seek(prefix); k != nil && bytes.HasPrefix(k, prefix); k, v = c.Next() {
-			logReply, err := decodeLog(*bytes.NewBuffer(v))
-			logReply.Key = string(k)
+			logDetail, err := decodeLog(*bytes.NewBuffer(v))
+			logDetail.Key = string(k)
 			if err != nil {
 				log.Printf("[GetLogs()] Error decoding log (key: %s) : %v\n", k, err)
 				return err
 			}
-			logs = append(logs, logReply)
+			logs = append(logs, logDetail)
 		}
 		return nil
 	}); err != nil {
@@ -136,26 +136,26 @@ func (s *LogServer) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.Ge
 		return nil, status.Errorf(codes.Internal, "Error reading from db (prefix: %s)", prefix)
 	}
 
-	return &pb.GetLogsReply{
+	return &pb.LogDetailList{
 		Logs: logs,
 	}, nil
 }
 
 // Get all Logs as stream by prefix
-func (s *LogServer) GetLogsStream(req *pb.GetLogsRequest, stream pb.Logger_GetLogsStreamServer) error {
+func (s *LogServer) GetLogsStream(req *pb.PrefixRequest, stream pb.Logger_GetLogsStreamServer) error {
 	prefix := []byte(req.GetPrefix())
 
 	if err := s.db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(logsBucket)).Cursor()
 		for k, v := c.Seek(prefix); k != nil && bytes.HasPrefix(k, prefix); k, v = c.Next() {
-			logReply, err := decodeLog(*bytes.NewBuffer(v))
-			logReply.Key = string(k)
+			logDetail, err := decodeLog(*bytes.NewBuffer(v))
+			logDetail.Key = string(k)
 			if err != nil {
 				log.Printf("[GetLogStream()] Error decoding log (key: %s) : %v\n", k, err)
 				return err
 			}
 
-			stream.Send(logReply)
+			stream.Send(logDetail)
 		}
 		return nil
 	}); err != nil {
@@ -166,23 +166,23 @@ func (s *LogServer) GetLogsStream(req *pb.GetLogsRequest, stream pb.Logger_GetLo
 	return nil
 }
 
-// Stream Logs by prefix
-func (s *LogServer) StreamLogs(req *pb.GetLogsRequest, stream pb.Logger_StreamLogsServer) error {
+// Tail Logs as stream by prefix
+func (s *LogServer) TailLogStream(req *pb.PrefixRequest, stream pb.Logger_TailLogStreamServer) error {
 	c := s.getStreamChan(req.GetPrefix())
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return nil // return to not leak the goroutine
-		case logReply := <-c:
-			stream.Send(logReply)
+		case logDetail := <-c:
+			stream.Send(logDetail)
 		}
 	}
 	return nil
 }
 
 // List Log prefixes
-func (s *LogServer) ListPrefixes(ctx context.Context, _ *empty.Empty) (*pb.ListPrefixesReply, error) {
+func (s *LogServer) ListPrefixes(ctx context.Context, _ *empty.Empty) (*pb.PrefixesList, error) {
 	prefixes := []string{}
 
 	if err := s.db.View(func(tx *bolt.Tx) error {
@@ -197,13 +197,13 @@ func (s *LogServer) ListPrefixes(ctx context.Context, _ *empty.Empty) (*pb.ListP
 		return nil, status.Error(codes.Internal, "Error reading from db")
 	}
 
-	return &pb.ListPrefixesReply{
+	return &pb.PrefixesList{
 		Prefixes: prefixes,
 	}, nil
 }
 
 // List Log keys by prefix
-func (s *LogServer) ListLogs(ctx context.Context, req *pb.ListLogsRequest) (*pb.ListLogsReply, error) {
+func (s *LogServer) ListKeys(ctx context.Context, req *pb.PrefixRequest) (*pb.KeysList, error) {
 	prefix := []byte(req.GetPrefix())
 	keys := []string{}
 
@@ -214,32 +214,32 @@ func (s *LogServer) ListLogs(ctx context.Context, req *pb.ListLogsRequest) (*pb.
 		}
 		return nil
 	}); err != nil {
-		log.Printf("[ListLogs()] Error reading from db (prefix: %s): %v\n", prefix, err)
+		log.Printf("[ListKeys()] Error reading from db (prefix: %s): %v\n", prefix, err)
 		return nil, status.Errorf(codes.Internal, "Error reading from db (prefix: %s)", prefix)
 	}
 
-	return &pb.ListLogsReply{
+	return &pb.KeysList{
 		Keys: keys,
 	}, nil
 }
 
-func encodeLog(logReply *pb.GetLogReply) ([]byte, error) {
+func encodeLog(logDetail *pb.LogDetail) ([]byte, error) {
 	var val bytes.Buffer
 	enc := gob.NewEncoder(&val)
-	if err := enc.Encode(logReply); err != nil {
-		log.Printf("[encodeLog()] Error Encoding pb.GetLogReply with gob: %v\n", err)
+	if err := enc.Encode(logDetail); err != nil {
+		log.Printf("[encodeLog()] Error Encoding pb.LogDetail with gob: %v\n", err)
 		return nil, err
 	}
 
 	return val.Bytes(), nil
 }
 
-func decodeLog(buf bytes.Buffer) (*pb.GetLogReply, error) {
-	logReply := &pb.GetLogReply{}
+func decodeLog(buf bytes.Buffer) (*pb.LogDetail, error) {
+	logDetail := &pb.LogDetail{}
 	dec := gob.NewDecoder(&buf)
-	err := dec.Decode(logReply)
+	err := dec.Decode(logDetail)
 	if err != nil {
-		log.Printf("[decodeLog()] Error Decoding pb.GetLogReply with gob: %v\n", err)
+		log.Printf("[decodeLog()] Error Decoding pb.LogDetail with gob: %v\n", err)
 	}
-	return logReply, err
+	return logDetail, err
 }
