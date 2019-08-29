@@ -8,7 +8,6 @@
   <strong>Logger service using <a href="https://grpc.io">gRPC</a> stored in <a href="https://github.com/etcd-io/bbolt">bbolt (bolt db)</a></strong>
 </p>
 
-
 ## Reference Clients
 
 - [Lumberman-go-client](https://github.com/webmocha/Lumberman-go-client)
@@ -37,12 +36,6 @@ Lumberman -db_file /var/db/lumberman.db
 see [lumber.proto](./lumber.proto)
 
 ## Dev
-
-generate certs
-
-```sh
-make certs
-```
 
 updating .proto files
 
