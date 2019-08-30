@@ -13,8 +13,14 @@
 - [Lumberman-go-client](https://github.com/webmocha/Lumberman-go-client)
 - [Lumberman-node-client](https://github.com/webmocha/Lumberman-node-client)
 
+## Options
 
-## Install and Usage
+| flag | default | description |
+| ---- | ------- | ----------- |
+| -db_file | lumberman.db | Path to DB file |
+| -port | 9090 | Port to listen for connections |
+
+## Install and run with Go
 
 ```sh
 go get github.com/webmocha/Lumberman
@@ -25,15 +31,35 @@ Run with defaults
 Lumberman
 ```
 
-specify a db file path
+specify a db file path and port
 
 ```sh
-Lumberman -db_file /var/db/lumberman.db
+Lumberman -db_file /var/db/lumberman.db -port 12345
+```
+
+## Run with Docker :whale:
+
+```sh
+docker run -d \
+  --name lumberman
+  -p 9090:9090 \
+  quay.io/theremix/lumberman
+```
+
+Persist db on host fs
+
+```sh
+docker run -d \
+  --name lumberman
+  -p 9090:9090 \
+  -v /var/db/lumberman/:/data/
+  quay.io/theremix/lumberman -dbPath /data/lumberman.db
 ```
 
 ## Service Definition
 
 see [lumber.proto](./lumber.proto)
+
 
 ## Dev
 
