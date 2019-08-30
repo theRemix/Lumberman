@@ -43,7 +43,7 @@ Lumberman -db_file /var/db/lumberman.db -port 12345
 docker run -d \
   --name lumberman
   -p 9090:9090 \
-  quay.io/theremix/lumberman
+  quay.io/webmochallc/lumberman
 ```
 
 Persist db on host fs
@@ -53,7 +53,7 @@ docker run -d \
   --name lumberman
   -p 9090:9090 \
   -v /var/db/lumberman/:/data/
-  quay.io/theremix/lumberman -dbPath /data/lumberman.db
+  quay.io/webmochallc/lumberman -dbPath /data/lumberman.db
 ```
 
 ## Service Definition
