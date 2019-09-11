@@ -8,10 +8,11 @@
   <strong>Logger service using <a href="https://grpc.io">gRPC</a> stored in <a href="https://github.com/etcd-io/bbolt">bbolt (bolt db)</a></strong>
 </p>
 
-## Reference Clients
+## Clients & Reference Implementation
 
 - [Lumberman-go-client](https://github.com/webmocha/Lumberman-go-client)
 - [Lumberman-node-client](https://github.com/webmocha/Lumberman-node-client)
+- [Lumberman-web-client](https://github.com/webmocha/Lumberman-web-client)
 
 ## Options
 
